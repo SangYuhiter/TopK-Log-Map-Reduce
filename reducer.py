@@ -6,7 +6,7 @@
 @Desc  : 第一次reduce
 """
 from operator import itemgetter
-from itertools import groupby
+
 
 def read_mapper_output(file):
     """
@@ -15,26 +15,36 @@ def read_mapper_output(file):
     :return:
     """
     for line in open(file, "r", encoding="utf-8"):
-        yield line.rstrip().split("\t")
+        yield line.rstrip()
 
-def reducer():
-    f_reducer = open("first_reduce.txt","w",encoding="utf-8")
-    data = read_mapper_output("first_map.txt")
-    for current_ip, group in groupby(data,itemgetter(0)):
-        print(current_ip,group.__sizeof__())
-        # print(group)
-        # try:
-        #     total_count = sum(int(count) for current_ip,count,access_time in group)
-        #     access_time_list = [access_time for current_ip,count,access_time in group]
-        #     access_time_str = ""
-        #     for access_time in access_time_list:
-        #         access_time_str +=access_time+","
-        #     f_reducer.write("%s\t%d\t%s\n"%(current_ip,total_count,access_time_str))
-        # except ValueError:
-        #     pass
+
+def first_reducer():
+    f_reducer = open("process_files/first_reduce.txt", "w", encoding="utf-8")
+    data = read_mapper_output("process_files/first_map.txt")
+    log_dict = {}
+    for line in data:
+        line_split = line.split("\t")
+        if line_split[0] in log_dict.keys():
+            log_dict[line_split[0]].append(line_split[2])
+        else:
+            log_dict[line_split[0]] = [line_split[2]]
+    for k in sorted(log_dict):
+        access_time_list = log_dict[k]
+        access_time_str = ""
+        for item in access_time_list:
+            access_time_str += item+" "
+        f_reducer.write("%s\t%d\t%s\n" % (k, len(log_dict[k]), access_time_str.strip()))
     f_reducer.close()
 
+def second_reducer():
+    f_reducer = open("process_files/second_reduce.txt","w",encoding="utf-8")
+    data = read_mapper_output("process_files/second_map.txt")
+    for item in sorted(data,reverse=True):
+        f_reducer.write(item+"\n")
+    f_reducer.close()
+
+
+
 if __name__ == '__main__':
-    reducer()
-
-
+    # first_reducer()
+    second_reducer()

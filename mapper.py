@@ -18,9 +18,9 @@ def read_input(file):
         yield line.rstrip()
 
 
-def mapper():
+def first_mapper():
     # 读取日志文件
-    f_map = open("first_map.txt", "w", encoding="utf-8")
+    f_map = open("process_files/first_map.txt", "w", encoding="utf-8")
     for file in os.listdir("data_files"):
         data = read_input(os.path.join("data_files", file))
         for line in data:
@@ -30,6 +30,15 @@ def mapper():
             f_map.write("%s\t%d\t%s\n" % (ip, 1, access_time))
     f_map.close()
 
+def second_mapper():
+    # 读取第一次reduce的结果
+    f_map = open("process_files/second_map.txt","w",encoding="utf-8")
+    data = read_input("process_files/first_reduce.txt")
+    for line in data:
+        line_split = line.split("\t")
+        f_map.write("%s\t%s\t%s\n"%(line_split[1],line_split[0],line_split[2]))
+    f_map.close()
 
 if __name__ == '__main__':
-    mapper()
+    # first_mapper()
+    second_mapper()
