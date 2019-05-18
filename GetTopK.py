@@ -20,7 +20,7 @@ def get_topk(k: int):
     topk_second_reducer()
     print("耗时%s..." % (time.time() - start))
     data = read_input("process_files/second_reduce.txt")
-    print("前%d个数据"% k)
+    print("前%d个数据" % k)
     while k > 0:
         print(data.__next__())
         k -= 1

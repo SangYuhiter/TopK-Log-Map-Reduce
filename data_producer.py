@@ -65,7 +65,7 @@ def seconds_to_timef(seconds):
 
 def produce_ip():
     ip_str = ""
-    range_num = 25
+    range_num = 10
     for i in range(4):
         cur_num = random.randint(1, range_num)
         ip_str = ip_str + str(cur_num) + "."
