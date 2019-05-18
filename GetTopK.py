@@ -13,10 +13,12 @@ import time
 
 def get_topk(k: int):
     produce_data(100, "2019-05-01-00-00-00", 0.1)
-    first_mapper()
-    first_reducer()
-    second_mapper()
-    second_reducer()
+    start = time.time()
+    topk_first_mapper()
+    topk_first_reducer()
+    topk_second_mapper()
+    topk_second_reducer()
+    print("耗时%s..." % (time.time() - start))
     data = read_input("process_files/second_reduce.txt")
     print("前%d个数据"% k)
     while k > 0:
@@ -25,6 +27,4 @@ def get_topk(k: int):
 
 
 if __name__ == '__main__':
-    start = time.time()
     get_topk(5)
-    print("耗时%s..." % (time.time() - start))

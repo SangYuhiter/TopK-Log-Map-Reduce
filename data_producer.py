@@ -14,8 +14,8 @@ import time, datetime
 
 day_seconds = 24 * 60 * 60
 time_format = "%Y-%m-%d-%H-%M-%S"
-log_num_min = 100
-log_num_max = 1000
+log_num_min = 1000
+log_num_max = 10000
 
 
 def get_data_file_list(list_size):

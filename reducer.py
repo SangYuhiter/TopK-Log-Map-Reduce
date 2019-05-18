@@ -18,7 +18,10 @@ def read_mapper_output(file):
         yield line.rstrip()
 
 
-def first_reducer():
+def topk_first_reducer():
+    """
+    第一次reduce:统计每个IP的访问次数及访问的时间列表
+    """
     f_reducer = open("process_files/first_reduce.txt", "w", encoding="utf-8")
     data = read_mapper_output("process_files/first_map.txt")
     log_dict = {}
@@ -32,19 +35,22 @@ def first_reducer():
         access_time_list = log_dict[k]
         access_time_str = ""
         for item in access_time_list:
-            access_time_str += item+" "
+            access_time_str += item + " "
         f_reducer.write("%s\t%d\t%s\n" % (k, len(log_dict[k]), access_time_str.strip()))
     f_reducer.close()
 
-def second_reducer():
-    f_reducer = open("process_files/second_reduce.txt","w",encoding="utf-8")
+
+def topk_second_reducer():
+    """
+    第二次reduce:使用访问次数进行排序，完成topk任务
+    """
+    f_reducer = open("process_files/second_reduce.txt", "w", encoding="utf-8")
     data = read_mapper_output("process_files/second_map.txt")
-    for item in sorted(data,reverse=True):
-        f_reducer.write(item+"\n")
+    for item in sorted(data, reverse=True):
+        f_reducer.write(item + "\n")
     f_reducer.close()
 
 
-
 if __name__ == '__main__':
-    # first_reducer()
-    second_reducer()
+    # topk_first_reducer()
+    topk_second_reducer()
